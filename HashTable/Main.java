@@ -15,20 +15,20 @@ public class Main {
         myHash.put(8, "Python");
 
         myHash.put(34, "Hel");
-        myHash.put(7, "by");
-        myHash.put(29, "go");
-        myHash.put(63, "mor");
-        myHash.put(37, "tab");
-        myHash.put(55, "ha");
-        myHash.put(132, "eng");
+        myHash.put(40, "by");
+        myHash.put(10, "go");
+        myHash.put(30, "mor");
+        myHash.put(64, "tab");
+        myHash.put(50, "ha");
+        myHash.put(174, "eng");
         myHash.put(60,"rus");
-        myHash.put(20, "Ja");
+        myHash.put(13, "Ja");
         myHash.put(88, "Py");
         myHash.remove(32);
         myHash.remove(17);
         myHash.remove(8);
-        myHash.remove(63);
-        myHash.remove(132);
+        myHash.remove(64);
+        myHash.remove(174);
         myHash.remove(88);
         System.out.println(myHash);
     }
