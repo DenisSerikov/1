@@ -122,12 +122,7 @@ public class HTable implements Table<Integer, String> {
             return key % (array.length / checkForList);
         }
     }
-    private int multiplicationMethod(Integer key) {
-        int n = 13;
-        double A = 0.618033;
-        return (int) (n * ((key * A) % 1));
-    }
-
+    
     @Override
     public String toString() {
         StringBuilder result = new StringBuilder();
