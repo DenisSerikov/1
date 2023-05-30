@@ -35,7 +35,7 @@ public class HTable implements Table<Integer, String> {
             array[keyForArray] = newNode;
         }
         pointer++;
-        if (pointer == array.length - 1)
+        if (pointer == array.length * 0,75)
             resize(array.length * 2);
     }
 
