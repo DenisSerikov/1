@@ -17,7 +17,7 @@ public class HTable implements Table<Integer, String> {
         public Node(int unchangedKey, String value, boolean reader) {
             this.value = value;
             this.unchangedKey = unchangedKey;
-            this.reader = reader;
+            this.read = read;
             next = null;
         }
     }
@@ -64,12 +64,12 @@ public class HTable implements Table<Integer, String> {
         int keyForArray = divisionMethod(key);
         Node correntNode = array[keyForArray];
         if (correntNode.unchangedKey == key) {
-            correntNode.reader = false;
+            correntNode.read = false;
             if (correntNode.next != null) {
                 while (correntNode.next != null) {
                     correntNode = correntNode.next;
                     if (correntNode.unchangedKey == key) {
-                        correntNode.reader = false;
+                        correntNode.read = false;
                     }
                 }
             }
@@ -78,7 +78,7 @@ public class HTable implements Table<Integer, String> {
                 while (correntNode.next != null) {
                     correntNode = correntNode.next;
                     if (correntNode.unchangedKey == key) {
-                        correntNode.reader = false;
+                        correntNode.read = false;
                     }
                 }
             }
@@ -91,9 +91,15 @@ public class HTable implements Table<Integer, String> {
 
     private void resize(int newLength) {
         Node[] newArray = new Node[newLength];
-        System.arraycopy(array, 0, newArray, 0, array.length);
-        array = newArray;
-        checkForList++;
+    for (int i = 0; i < array.length; i++) {
+        Node node = newArray[i];
+        while (node != null) {
+            Node nextNode = node.getNext();
+            int newIndex = divisionMethod();
+            node.setNext(newArray[newIndex]);
+            newArray[newIndex] = node;
+            node = nextNode;
+        }
     }
 
     private int hashFunction(Integer key) {
@@ -120,12 +126,12 @@ public class HTable implements Table<Integer, String> {
             if (array[i] != null) {
                 Node currentNode = array[i];
                 while (currentNode.next != null) {
-                    if (currentNode.reader) {
+                    if (currentNode.read) {
                         result.append(currentNode.value).append("\n");
                     }
                     currentNode = currentNode.next;
                 }
-                if (currentNode.reader) {
+                if (currentNode.read) {
                     result.append(currentNode.value).append("\n");
                 }
             }
