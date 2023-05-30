@@ -24,9 +24,6 @@ public class HTable implements Table<Integer, String> {
 
     public void put(int key, String value) {
         int keyForArray = divisionMethod(key);
-        if (keyForArray < 0) {
-            keyForArray = keyForArray + (-2 * keyForArray);
-        }
         Node newNode = new Node(key, value, true);
         if (array[keyForArray] != null) {
             Node correntNode = array[keyForArray];
@@ -45,9 +42,6 @@ public class HTable implements Table<Integer, String> {
     public String get(int key) {
         StringBuilder result = new StringBuilder();
         int keyForArray = divisionMethod(key);
-        if (keyForArray < 0) {
-            keyForArray = keyForArray + (-2 * keyForArray);
-        }
         Node currentNode = array[keyForArray];
         if (currentNode.next == null) {
             result = new StringBuilder(currentNode.value);
@@ -68,9 +62,6 @@ public class HTable implements Table<Integer, String> {
 
     public void remove(int key) {
         int keyForArray = divisionMethod(key);
-        if (keyForArray < 0) {
-            keyForArray = keyForArray + (-2 * keyForArray);
-        }
         Node correntNode = array[keyForArray];
         if (correntNode.unchangedKey == key) {
             correntNode.reader = false;
