@@ -1,7 +1,5 @@
 package HashTable;
-
 public class HTable implements Table<Integer, String> {
-
     private final int INIT_SIZE = 16;
     private int checkForList = 1;
     private Node[] array = new Node[INIT_SIZE];
@@ -10,13 +8,13 @@ public class HTable implements Table<Integer, String> {
 
     public static class Node {
         public String value;
-        public int unchangedKey;
-        public boolean reader;
+        public Integer key;
+        public boolean read;
         public Node next;
 
-        public Node(int unchangedKey, String value, boolean reader) {
+        public Node(int key, String value, boolean read) {
             this.value = value;
-            this.unchangedKey = unchangedKey;
+            this.key = key;
             this.read = read;
             next = null;
         }
@@ -35,8 +33,8 @@ public class HTable implements Table<Integer, String> {
             array[keyForArray] = newNode;
         }
         pointer++;
-        if (pointer == array.length * 0,75)
-            resize(array.length * 2);
+        if (pointer == array.length * 0.75)
+            resize();
     }
 
     public String get(int key) {
@@ -47,13 +45,13 @@ public class HTable implements Table<Integer, String> {
             result = new StringBuilder(currentNode.value);
         } else {
             while (currentNode.next != null) {
-                if (currentNode.unchangedKey == key) {
+                if (currentNode.key == key) {
                     result.append(currentNode.value);
                     return result.toString();
                 }
                 currentNode = currentNode.next;
             }
-            if (currentNode.unchangedKey == key) {
+            if (currentNode.key == key) {
                 result.append(currentNode.value);
             }
         }
@@ -63,12 +61,12 @@ public class HTable implements Table<Integer, String> {
     public void remove(int key) {
         int keyForArray = divisionMethod(key);
         Node correntNode = array[keyForArray];
-        if (correntNode.unchangedKey == key) {
+        if (correntNode.key == key) {
             correntNode.read = false;
             if (correntNode.next != null) {
                 while (correntNode.next != null) {
                     correntNode = correntNode.next;
-                    if (correntNode.unchangedKey == key) {
+                    if (correntNode.key == key) {
                         correntNode.read = false;
                     }
                 }
@@ -77,7 +75,7 @@ public class HTable implements Table<Integer, String> {
             if (correntNode.next != null) {
                 while (correntNode.next != null) {
                     correntNode = correntNode.next;
-                    if (correntNode.unchangedKey == key) {
+                    if (correntNode.key == key) {
                         correntNode.read = false;
                     }
                 }
@@ -89,21 +87,19 @@ public class HTable implements Table<Integer, String> {
         return pointer;
     }
 
-    private void resize(int newLength) {
-        Node[] newArray = new Node[newLength];
-        System.arraycopy(array, 0, newArray, 0, array.length);
-        array = newArray;
-        checkForList++;
-    }
-    
-    private int hashFunction(Integer key) {
-        StringBuilder result = new StringBuilder();
-        String strKey = String.valueOf(key);
-        for (int i = 0; i < strKey.length(); i++) {
-            result.append(Integer.valueOf(strKey.charAt(i)));
+    private void resize() {
+        Node[] newArray = new Node[array.length * 2];
+        for (Node node : array) {
+            Node list = node;
+            while (list != null) {
+                Node next = list.next;
+                int trickyHash = (Math.abs(list.key.hashCode()) % newArray.length);
+                list.next = newArray[trickyHash];
+                newArray[trickyHash] = list;
+                list = next;
+            }
         }
-        int chet = Integer.parseInt(String.valueOf(result));
-        return chet % array.length;
+        array = newArray;
     }
 
     private int divisionMethod(Integer key) {
@@ -113,7 +109,7 @@ public class HTable implements Table<Integer, String> {
             return key % (array.length / checkForList);
         }
     }
-    
+
     public String toString() {
         StringBuilder result = new StringBuilder();
         for (int i = 0; i < array.length; i++) {
