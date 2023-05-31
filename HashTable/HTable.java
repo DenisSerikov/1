@@ -91,17 +91,11 @@ public class HTable implements Table<Integer, String> {
 
     private void resize(int newLength) {
         Node[] newArray = new Node[newLength];
-    for (int i = 0; i < array.length; i++) {
-        Node node = newArray[i];
-        while (node != null) {
-            Node nextNode = node.getNext();
-            int newIndex = divisionMethod();
-            node.setNext(newArray[newIndex]);
-            newArray[newIndex] = node;
-            node = nextNode;
-        }
+        System.arraycopy(array, 0, newArray, 0, array.length);
+        array = newArray;
+        checkForList++;
     }
-
+    
     private int hashFunction(Integer key) {
         StringBuilder result = new StringBuilder();
         String strKey = String.valueOf(key);
