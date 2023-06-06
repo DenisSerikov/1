@@ -20,7 +20,7 @@ public class HTable implements Table<Integer, String> {
     }
 
     public void put(int key, String value) {
-        int keyForArray = (Math.abs(list.key.hashCode()) % newArray.length);
+        int keyForArray = (Math.abs(key % array.length);
         Node newNode = new Node(key, value, true);
         if (array[keyForArray] != null) {
             Node correntNode = array[keyForArray];
@@ -38,7 +38,7 @@ public class HTable implements Table<Integer, String> {
 
     public String get(int key) {
         StringBuilder result = new StringBuilder();
-        int keyForArray = (Math.abs(list.key.hashCode()) % newArray.length);
+        int keyForArray = (Math.abs(key % array.length);
         Node currentNode = array[keyForArray];
         if (currentNode.next == null) {
             result = new StringBuilder(currentNode.value);
@@ -58,7 +58,7 @@ public class HTable implements Table<Integer, String> {
     }
 
     public void remove(int key) {
-        int keyForArray = (Math.abs(list.key.hashCode()) % newArray.length);
+        int keyForArray = (Math.abs(key % array.length);
         Node correntNode = array[keyForArray];
         if (correntNode.key == key) {
             correntNode.read = false;
@@ -92,7 +92,7 @@ public class HTable implements Table<Integer, String> {
             Node list = node;
             while (list != null) {
                 Node next = list.next;
-                int trickyHash = (Math.abs(list.key.hashCode()) % newArray.length);
+                int trickyHash = (Math.abs(list.key % newArray.length);
                 list.next = newArray[trickyHash];
                 newArray[trickyHash] = list;
                 list = next;
